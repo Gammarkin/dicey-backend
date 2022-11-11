@@ -3,7 +3,6 @@ import ICharacter from '../interfaces/IChar';
 import IService from '../interfaces/IService';
 
 const OBJECT_NOT_FOUND = 'Object not found';
-const ID_NOT_VALID = 'Id must have 24 hexadecimal characters';
 
 export default class CarController {
 	constructor(private _service: IService<ICharacter>) {}
