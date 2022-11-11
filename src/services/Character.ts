@@ -1,36 +1,40 @@
-import IService from '../interfaces/IService';
-import {IModel} from '../interfaces/IModel';
 import ICharacter from '../interfaces/IChar';
+import CharacterModel from '../models/Characters';
+import seed from '../seed';
 
-class CharacterService implements IService<ICharacter> {
-	private _char: IModel<ICharacter>;
+const charModel = new CharacterModel();
 
-	constructor(model: IModel<ICharacter>) {
-		this._char = model;
+const read = async (): Promise<ICharacter[] | ICharacter> => {
+	const characters = await charModel.read();
+
+	if (characters.length === 0) {
+		seed.forEach(async (char) => {
+			await charModel.create(char);
+		});
+
+		return charModel.read();
 	}
 
-	public async create(obj: ICharacter): Promise<ICharacter> {
-		return this._char.create(obj);
-	}
+	return characters;
+};
 
-	public async findAll(): Promise<ICharacter[]> {
-		return this._char.read();
-	}
+const readOne = async (id: string): Promise<ICharacter | null> =>
+	charModel.readOne(id);
 
-	public async findById(id: string): Promise<ICharacter | null> {
-		return this._char.readOne(id);
-	}
+const create = async (body: ICharacter): Promise<ICharacter> =>
+	charModel.create(body);
 
-	public async updateOne(
-		id: string,
-		obj: ICharacter
-	): Promise<ICharacter | null> {
-		return this._char.update(id, obj);
-	}
+const update = async (
+	id: string,
+	body: ICharacter
+): Promise<ICharacter | null> => charModel.update(id, body);
 
-	public async destroy(id: string): Promise<ICharacter | null> {
-		return this._char.delete(id);
-	}
-}
+const destroy = async (id: string): Promise<void> => charModel.delete(id);
 
-export default CharacterService;
+export default {
+	read,
+	readOne,
+	create,
+	update,
+	destroy,
+};

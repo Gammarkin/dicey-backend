@@ -9,5 +9,6 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/', routes.Main);
+app.use('/character', routes.Character);
 
 export default app;
