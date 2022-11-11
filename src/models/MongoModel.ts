@@ -12,22 +12,22 @@ abstract class MongoModel<T> implements IModel<T> {
 		return this._model.create({...obj});
 	}
 
-	public async readOne(_id: string): Promise<T | null> {
-		return this._model.findOne({_id});
+	public async readOne(id: string): Promise<T | null> {
+		return this._model.findOne({id});
 	}
 
 	public async read(): Promise<T[]> {
 		return this._model.find({});
 	}
 
-	public async update(_id: string, obj: Partial<T>): Promise<T | null> {
-		return this._model.findOneAndUpdate({_id}, {...obj} as UpdateQuery<T>, {
+	public async update(id: string, obj: Partial<T>): Promise<T | null> {
+		return this._model.findOneAndUpdate({id}, {...obj} as UpdateQuery<T>, {
 			new: true,
 		});
 	}
 
-	public async delete(_id: string): Promise<void> {
-		await this._model.findByIdAndDelete({_id});
+	public async delete(id: string): Promise<void> {
+		await this._model.deleteOne({id});
 	}
 }
 
