@@ -1,55 +1,60 @@
 import {Request, Response} from 'express';
 
-import CharacterService from '../services/Character';
+import ICharacter from '../interfaces/IChar';
+import IService from '../interfaces/IService';
 
-const get = async (_req: Request, res: Response) => {
-	const characters = await CharacterService.read();
+const OBJECT_NOT_FOUND = 'Object not found';
 
-	return res.status(200).json(characters);
-};
+export default class CharController {
+	constructor(private _service: IService<ICharacter>) {}
 
-const getOne = async (req: Request, res: Response) => {
-	const {id} = req.params;
+	public async create(req: Request, res: Response<ICharacter>) {
+		const results = await this._service.create(req.body);
 
-	const character = await CharacterService.readOne(id);
-
-	if (!character) {
-		return res.status(404).json({message: 'Character not found'});
+		return res.status(201).json(results);
 	}
 
-	return res.status(200).json(character);
-};
+	public async findAll(_req: Request, res: Response<ICharacter[]>) {
+		const results = await this._service.findAll();
 
-const post = async (req: Request, res: Response) => {
-	const charCreated = await CharacterService.create(req.body);
-
-	return res.status(201).json(charCreated);
-};
-
-const put = async (req: Request, res: Response) => {
-	const {id} = req.params;
-
-	const charUpdated = await CharacterService.update(id, req.body);
-
-	if (!charUpdated) {
-		return res.status(404).json({message: 'Character not found'});
+		return res.status(200).json(results);
 	}
 
-	return res.status(200).json(charUpdated);
-};
+	public async findByPlayerTag(
+		req: Request,
+		res: Response<ICharacter | Record<string, string>>
+	) {
+		const {playerTag} = req.params;
 
-const remove = async (req: Request, res: Response) => {
-	const {id} = req.params;
+		const results = await this._service.findByPlayerTag(playerTag);
 
-	await CharacterService.destroy(id);
+		if (!results) {
+			return res.status(404).json({error: OBJECT_NOT_FOUND});
+		}
 
-	return res.status(204).end();
-};
+		return res.status(200).json(results);
+	}
 
-export default {
-	get,
-	getOne,
-	post,
-	put,
-	remove,
-};
+	public async update(
+		req: Request,
+		res: Response<ICharacter | Record<string, string>>
+	) {
+		const {playerTag} = req.params;
+
+		const results = await this._service.updateOne(playerTag, req.body);
+
+		if (!results) {
+			return res.status(404).json({error: OBJECT_NOT_FOUND});
+		}
+
+		return res.status(200).json(results);
+	}
+
+	public async destroy(req: Request, res: Response<ICharacter>) {
+		const {playerTag} = req.params;
+
+		await this._service.destroy(playerTag);
+
+		return res.status(204).end();
+	}
+}
