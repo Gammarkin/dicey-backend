@@ -4,6 +4,8 @@ import CharacterController from '../controllers/Character';
 import CharacterService from '../services/Character';
 import CharacterModel from '../models/Character';
 
+import validatePost from '../middlewares/validatePost';
+
 const router = Router();
 
 const charModel = new CharacterModel();
@@ -15,7 +17,16 @@ router.get('/:playerTag', (req, res) =>
 	charController.findByPlayerTag(req, res)
 );
 
-router.post('/', (req, res) => charController.create(req, res));
+router.post(
+	'/',
+	validatePost.validateId,
+	validatePost.validatePlayerTag,
+	validatePost.validateCharacterName,
+	validatePost.validateSkills,
+	validatePost.validateAttributes,
+	(req, res) => charController.create(req, res)
+);
+
 router.put('/:playerTag', (req, res) => charController.update(req, res));
 router.delete('/:playerTag', (req, res) => charController.destroy(req, res));
 
