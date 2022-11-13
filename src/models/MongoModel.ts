@@ -8,7 +8,7 @@ abstract class MongoModel<T> implements IModel<T> {
 		this._model = model;
 	}
 
-	public async create(obj: T | T[]): Promise<T> {
+	public async create(obj: T): Promise<T> {
 		return this._model.create({...obj});
 	}
 
@@ -32,6 +32,10 @@ abstract class MongoModel<T> implements IModel<T> {
 
 	public async delete(playerTag: string): Promise<void> {
 		await this._model.deleteOne({playerTag});
+	}
+
+	public async createMany(obj: T[]): Promise<T[]> {
+		return this._model.insertMany(obj);
 	}
 }
 

@@ -4,4 +4,5 @@ export default interface IChar {
 	characterName: string;
 	skills: object;
 	attributes: object;
+	weapons: [] | undefined;
 }

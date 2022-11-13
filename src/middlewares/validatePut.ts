@@ -15,7 +15,8 @@ export default class ValidatePut {
 			!body.characterName &&
 			!body.skills &&
 			!body.attributes &&
-			!body.id
+			!body.id &&
+			!body.weapons
 		) {
 			return res.status(400).json({message: 'Body is invalid'});
 		}
@@ -77,6 +78,63 @@ export default class ValidatePut {
 					.status(400)
 					.json({message: 'Key attributes must have 5 keys'});
 			}
+		}
+		next();
+	}
+
+	static validateWeapons(req: Request, res: Response, next: NextFunction) {
+		const weapons = req.body.weapons;
+
+		if (weapons) {
+			if (!Array.isArray(weapons)) {
+				return res.status(400).json({message: 'Key weapons must be an array'});
+			}
+
+			if (weapons.length === 0) {
+				return res
+					.status(400)
+					.json({message: 'Key weapons must have at least 1 weapon'});
+			}
+
+			weapons.forEach((weapon: any) => {
+				if (typeof weapon !== 'object' || Array.isArray(weapon)) {
+					return res
+						.status(400)
+						.json({message: 'Key weapons must be an array of objects'});
+				}
+
+				if (Object.keys(weapon).length !== 5) {
+					return res
+						.status(400)
+						.json({message: 'Key weapons must have 5 keys'});
+				}
+
+				if (!weapon.name || typeof weapon.name !== 'string') {
+					return res.status(400).json({message: 'Key name must be a string'});
+				}
+
+				if (!weapon.damageDice || typeof weapon.damageDice !== 'string') {
+					return res
+						.status(400)
+						.json({message: 'Key damageDice must be a string'});
+				}
+
+				if (!weapon.type || typeof weapon.type !== 'string') {
+					return res.status(400).json({message: 'Key type must be a string'});
+				}
+
+				if (!weapon.damageType || typeof weapon.damageType !== 'string') {
+					return res
+						.status(400)
+						.json({message: 'Key damageType must be a string'});
+				}
+
+				if (!weapon.critical || typeof weapon.critical !== 'string') {
+					return res
+						.status(400)
+						.json({message: 'Key critical must be a string'});
+				}
+			});
 		}
 		next();
 	}

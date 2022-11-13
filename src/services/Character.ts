@@ -20,7 +20,7 @@ class CharacterService implements IService<ICharacter> {
 		const characters = await this._character.read();
 
 		if (characters.length === 0) {
-			await this._character.create(seed);
+			await this._character.createMany(seed);
 
 			return this._character.read();
 		}

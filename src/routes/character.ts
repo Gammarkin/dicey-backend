@@ -38,6 +38,7 @@ router.put(
 	ValidatePut.validateCharacterName,
 	ValidatePut.validateSkills,
 	ValidatePut.validateAttributes,
+	ValidatePut.validateWeapons,
 	(req, res, next) => charValidation.validateIfCharacterExists(req, res, next),
 	(req, res) => charController.update(req, res)
 );

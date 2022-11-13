@@ -2,7 +2,7 @@ import {model as mongooseCreateModel, Schema} from 'mongoose';
 import MongoModel from './MongoModel';
 import IChar from '../interfaces/IChar';
 
-const carMongooseSchema = new Schema<IChar>(
+const CharMongooseSchema = new Schema<IChar>(
 	{
 		id: {
 			type: Number,
@@ -24,14 +24,18 @@ const carMongooseSchema = new Schema<IChar>(
 			type: Object,
 			required: true,
 		},
+		weapons: {
+			type: Array,
+			required: true,
+		},
 	},
 	{versionKey: false}
 );
 
-class Car extends MongoModel<IChar> {
-	constructor(model = mongooseCreateModel('Characters', carMongooseSchema)) {
+class Char extends MongoModel<IChar> {
+	constructor(model = mongooseCreateModel('Characters', CharMongooseSchema)) {
 		super(model);
 	}
 }
 
-export default Car;
+export default Char;
