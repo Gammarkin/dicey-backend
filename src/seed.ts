@@ -293,7 +293,7 @@ export default [
 			pilotagem: 5,
 			pontaria: 5,
 			profissao: 0,
-			reflexos: 0,
+			reflexos: 5,
 			religiao: 0,
 			sobrevivencia: 5,
 			tatica: 5,
@@ -392,7 +392,7 @@ export default [
 	{
 		id: 7,
 		playerTag: '8831',
-		characterName: 'Sara',
+		characterName: 'Sara Linn',
 		skills: {
 			for: 1,
 			agi: 2,

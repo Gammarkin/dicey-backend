@@ -17,6 +17,7 @@ const charController = new CharacterController(charService);
 const charValidation = new ValidateIfCharExists(charService);
 
 router.get('/', (req, res) => charController.findAll(req, res));
+router.get('/seed', (req, res) => charController.destroyAndSeed(req, res));
 router.get('/:playerTag', (req, res) =>
 	charController.findByPlayerTag(req, res)
 );

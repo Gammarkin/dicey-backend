@@ -37,6 +37,10 @@ abstract class MongoModel<T> implements IModel<T> {
 	public async createMany(obj: T[]): Promise<T[]> {
 		return this._model.insertMany(obj);
 	}
+
+	public async deleteAll(): Promise<void> {
+		await this._model.deleteMany({});
+	}
 }
 
 export default MongoModel;

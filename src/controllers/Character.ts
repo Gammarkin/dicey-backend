@@ -57,4 +57,10 @@ export default class CharController {
 
 		return res.status(204).end();
 	}
+
+	public async destroyAndSeed(_req: Request, res: Response<ICharacter[]>) {
+		const seeds = await this._service.destroyAndSeed();
+
+		return res.status(200).json(seeds);
+	}
 }

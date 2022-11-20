@@ -42,6 +42,12 @@ class CharacterService implements IService<ICharacter> {
 	public async destroy(playerTag: string): Promise<void> {
 		await this._character.delete(playerTag);
 	}
+
+	public async destroyAndSeed(): Promise<ICharacter[]> {
+		await this._character.deleteAll();
+
+		return this._character.createMany(seed);
+	}
 }
 
 export default CharacterService;

@@ -5,4 +5,5 @@ export default interface IModel<T> {
 	readOne(id: string): Promise<T | null>;
 	update(id: string, obj: T): Promise<T | null>;
 	delete(id: string): Promise<void>;
+	deleteAll(): Promise<void>;
 }
